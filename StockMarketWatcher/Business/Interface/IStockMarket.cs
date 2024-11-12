@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StockMarketWatcher.Business.Interface
 {
-    internal interface IStockMarket
+    public interface IStockMarket
     {
     }
 }
