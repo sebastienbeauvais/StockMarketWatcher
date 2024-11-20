@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Business\Models\" />
+    <Folder Include="Contracts\Business\" />
   </ItemGroup>
 
 </Project>
