@@ -5,41 +5,52 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using StockMarketWatcher.Business.Interface;
+using System.Linq.Expressions;
 
 namespace StockMarketWatcher.Business
 {
     public class StockMarket : IStockMarket
     {
-        private Dictionary<string, IStock> _stocks = new Dictionary<string, IStock>(); //Update to dependency Injection
+        private readonly List<IStock> _stocksDb;
+        public StockMarket(List<IStock> stocksDb)
+        {
+            _stocksDb = stocksDb;
+        }
 
         public void AddStock(IStock stock)
         {
-            _stocks[stock.Symbol] = stock;
+            if (!_stocksDb.Any(s => s.Symbol == stock.Symbol))
+            {
+                _stocksDb.Add(stock);
+            }
         }
 
         public void UpdateStockPrice(string symbol, double newPrice)
         {
-            if (_stocks.TryGetValue(symbol, out var stock)) //This can be updated to dependency injection of the Db of Stocks.
+            var stock = _stocksDb.FirstOrDefault(s => s.Symbol == symbol);
+            if (stock != null)
             {
                 stock.UpdatePrice(newPrice);
             }
         }
 
-        public void Subscribe(string symbol, ISubscriber subscriber) //use the model here instead of business class 'subscriber.name'
+        public void Subscribe(string symbol, ISubscriber subscriber)
         {
-            if (_stocks.TryGetValue(symbol, out var stock))
+            var stock = _stocksDb.FirstOrDefault(s => s.Symbol == symbol);
+            if (stock != null)
             {
                 stock.Attach(subscriber);
-                Console.WriteLine($"{subscriber} subscribed to {symbol}.");
+                Console.WriteLine($"{subscriber.Name} subscribed to {symbol}.");
             }
         }
 
-        public void Unsubscribe(string symbol, ISubscriber subscriber) //use the model here instead of business class 'subscriber.name'
+        public void Unsubscribe(string symbol, ISubscriber subscriber)
         {
-            if (_stocks.TryGetValue(symbol, out var stock))
+            var stock = _stocksDb.FirstOrDefault(s => s.Symbol == symbol);
+            if (stock != null)
             {
                 stock.Detach(subscriber);
-                Console.WriteLine($"{subscriber} unsubscribed from {symbol}.");
+                Console.WriteLine($"{subscriber.Name} unsubscribed from {symbol}.");
             }
         }
     }

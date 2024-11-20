@@ -20,5 +20,6 @@ namespace StockMarketWatcher.Business
         {
             Console.WriteLine($"{_name} received update: {stock.Symbol} is now {stock.Price:C}");
         }
+        public string Name => _name;
     }
 }

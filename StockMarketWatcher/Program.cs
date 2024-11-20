@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using StockMarketWatcher.Business;
 using StockMarketWatcher.Business.Interface;
+using StockMarketWatcher.Data;
 using System;
 
 namespace Program
@@ -18,9 +19,12 @@ namespace Program
         private static ServiceProvider ConfigureServices()
         {
             var services = new ServiceCollection();
+            var stocks = StockDb.GetStocks();
 
-            //Register Services
+            //Register             
             services.AddScoped<StockMarketWatcher.StockMarketWatcher>();
+            services.AddSingleton<List<IStock>>(stocks);
+            services.AddScoped<IStockMarket, StockMarket>();
 
             return services.BuildServiceProvider();
         }
