@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using StockMarketWatcher.Business;
+using StockMarketWatcher.Business.Interface;
 using System;
 
 namespace Program
@@ -18,6 +20,7 @@ namespace Program
             var services = new ServiceCollection();
 
             //Register Services
+            services.AddScoped<StockMarketWatcher.StockMarketWatcher>();
 
             return services.BuildServiceProvider();
         }

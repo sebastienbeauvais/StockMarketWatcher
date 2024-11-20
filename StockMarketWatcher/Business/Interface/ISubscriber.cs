@@ -8,5 +8,6 @@ namespace StockMarketWatcher.Business.Interface
 {
     public interface ISubscriber
     {
+        void Update(IStock stock);
     }
 }
